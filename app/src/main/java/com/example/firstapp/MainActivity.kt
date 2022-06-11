@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.PersistableBundle
 import com.example.firstapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        second = savedInstanceState?.getInt("seconds") ?: 0
+        isRunning = savedInstanceState?.getBoolean("isRunning") ?: false
+        flag = savedInstanceState?.getInt("flag") ?: 0
         binding.startBtn.setOnClickListener{
             isRunning = true
             runTimer()
@@ -32,6 +36,14 @@ class MainActivity : AppCompatActivity() {
             binding.currTime.text = "0:00:00"
         }
     }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState.putInt("seconds", second)
+        outState.putBoolean("isRunning", isRunning)
+        outState.putInt("flag", flag)
+    }
+
     private fun runTimer() {
         if (flag == 0){
             flag = 1
